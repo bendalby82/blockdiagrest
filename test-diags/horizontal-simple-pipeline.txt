@@ -1,0 +1,6 @@
+blockdiag {
+  "Commit Change" [numbered=30s]
+  "Commit Change" -> "Build" [label = "1hr"];
+  "Build" -> "Unit Tests" -> "Push to Artifactory" -> "Deploy to Test";
+  "Deploy to Test" -> "Integration Tests" -> "Change Board" -> "Push to Production";
+}
