@@ -1,0 +1,13 @@
+blockdiag {
+  "Raise Request" [numbered=5m];
+  "Approve Request" [numbered=5m];
+  "Order VMs" [numbered=4h];
+  "Provision VMs" [numbered=2h];
+  "Deploy Application" [numbered=2h];
+  "Change Firewalls" [numbered=1h];
+  "Raise Request" -> "Approve Request" [label = "2d"];
+  "Approve Request" -> "Order VMs" [label = "5d"];
+  "Order VMs" -> "Provision VMs" [label = "5d"];
+  "Provision VMs" -> "Deploy Application"  [label = "5d"];
+  "Deploy Application" -> "Change Firewalls" [label = "10d"];
+}
