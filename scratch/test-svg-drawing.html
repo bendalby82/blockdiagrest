@@ -1,0 +1,42 @@
+<html>
+<head><title>Test Drawing</title>
+<script>
+function drawStuff(){
+	var b_canvas = document.getElementById("a");
+	var context = b_canvas.getContext("2d");
+	//b_context.fillRect(50, 25, 150, 100);
+
+	for (var x = 0.5; x < 500; x += 10){
+		context.moveTo(x, 0);
+		context.lineTo(x, 375);
+	}
+
+	for (var y = 0.5; y < 375; y += 10){
+		context.moveTo(0, y);
+		context.lineTo(500, y);
+	}
+
+	context.strokeStyle = "#eee";
+	context.stroke();
+
+	context.beginPath();
+	context.moveTo(0, 40);
+	context.lineTo(240, 40);
+	context.moveTo(260, 40);
+	context.lineTo(500, 40);
+	context.moveTo(495, 35);
+	context.lineTo(500, 40);
+	context.lineTo(495, 45);
+
+	context.strokeStyle = "#000";
+	context.stroke();
+}
+
+</script>
+</head>
+<body onload="drawStuff()">
+<!--http://diveintohtml5.info/canvas.html-->
+<canvas id="a" width="500" height="375" class="clear" style="border:1px dotted;float:left"></canvas>
+
+</body>
+</html>
