@@ -5,6 +5,24 @@ function drawStuff(){
 	var b_canvas = document.getElementById("a");
 	var context = b_canvas.getContext("2d");
 	var textStyleStageName = 'bold 14px arial';
+
+	var vspBoxWidth = 140;
+	var vspBoxHeight = 100;
+	var vspBoxPosX = 20;
+	var vspBoxPosY = 70;
+	var txtLine = '';
+	var txtLineWidth = 0;
+	var txtLineHeight = 0;
+	var vspLine1Width = 0;
+	var vspLine2Width = 0;
+	var vspLine3Width = 0;
+	var vspLine4Width = 0;
+	var vspLinePosY = 0;
+	var vspSpaceBetweenTextLines = 6;
+	var elapsedTimeBoxWidth = 0;
+	var elapsedTimeBoxHeight = 20;
+
+
 	//b_context.fillRect(50, 25, 150, 100);
 
 	for (var x = 0.5; x < 500; x += 10){
@@ -34,7 +52,7 @@ function drawStuff(){
 	context.closePath();
 
 	//Draw a Value Stream Box
-	context.rect(20,70,140,100);
+	context.rect(vspBoxPosX,vspBoxPosY,vspBoxWidth,vspBoxHeight);
 	context.shadowColor = 'black';
 	context.shadowBlur = 5;
 	context.shadowOffsetX = 3;
@@ -44,13 +62,37 @@ function drawStuff(){
 	context.fill();
 
 	//Add some text
+	context.beginPath();
 	context.shadowColor = 'transparent';
 	context.font = textStyleStageName;
 	context.fillStyle = 'black';
-	context.fillText('Planning',40, 100);
+	txtLine = 'Planning'
+	vspLinePosY = vspBoxPosY + 30;
+	context.fillText(txtLine,parseInt((vspBoxWidth - context.measureText(txtLine).width)/2) + vspBoxPosX, vspLinePosY);
 	context.font = '14px arial';
-	context.fillText('60 hrs avg', 40, 120);
+	txtLineHeight = context.measureText('M').width;
 
+	txtLine = '60 hrs avg'
+	vspLinePosY = vspLinePosY + txtLineHeight + vspSpaceBetweenTextLines;
+	context.fillText(txtLine, parseInt((vspBoxWidth - context.measureText(txtLine).width)/2) + vspBoxPosX, vspLinePosY);
+
+	context.beginPath();
+	txtLine = '120 hrs';
+	txtLineWidth = context.measureText(txtLine).width;
+	//See https://stackoverflow.com/questions/1134586/how-can-you-find-the-height-of-text-on-an-html-canvas
+	txtLineHeight = context.measureText('M').width;
+	elapsedTimeBoxWidth = txtLineWidth + 20;
+	context.rect(parseInt((vspBoxWidth - elapsedTimeBoxWidth)/2) + vspBoxPosX,vspBoxPosY + vspBoxHeight + 10,elapsedTimeBoxWidth,elapsedTimeBoxHeight);
+	context.fillStyle = '#cccccc';
+	context.fill();
+
+	context.beginPath();
+	context.fillStyle = 'black';
+	//Center text horizontally and vertically
+	context.fillText(txtLine, parseInt((vspBoxWidth - txtLineWidth)/2) + vspBoxPosX,
+		vspBoxPosY + vspBoxHeight + 10 + 
+		elapsedTimeBoxHeight - parseInt((elapsedTimeBoxHeight - txtLineHeight)/2));
+	//context.closePath();
 	
 
 
