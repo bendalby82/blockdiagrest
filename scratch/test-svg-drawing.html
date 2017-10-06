@@ -4,6 +4,7 @@
 function drawStuff(){
 	var b_canvas = document.getElementById("a");
 	var context = b_canvas.getContext("2d");
+	var textStyleStageName = 'bold 14px arial';
 	//b_context.fillRect(50, 25, 150, 100);
 
 	for (var x = 0.5; x < 500; x += 10){
@@ -30,6 +31,29 @@ function drawStuff(){
 
 	context.strokeStyle = "#000";
 	context.stroke();
+	context.closePath();
+
+	//Draw a Value Stream Box
+	context.rect(20,70,140,100);
+	context.shadowColor = 'black';
+	context.shadowBlur = 5;
+	context.shadowOffsetX = 3;
+	context.shadowOffsetY = 3;
+	context.fillStyle = '#00ccff';
+	context.stroke();
+	context.fill();
+
+	//Add some text
+	context.shadowColor = 'transparent';
+	context.font = textStyleStageName;
+	context.fillStyle = 'black';
+	context.fillText('Planning',40, 100);
+	context.font = '14px arial';
+	context.fillText('60 hrs avg', 40, 120);
+
+	
+
+
 }
 
 </script>

@@ -1,0 +1,15 @@
+https://stackoverflow.com/questions/10120975/how-to-save-an-svg-generated-by-raphael
+https://stackoverflow.com/questions/30995551/arrow-heads-on-raphael-path
+https://stackoverflow.com/questions/27372513/raphaeljs-how-to-draw-arrow-heads-at-the-end-of-archs
+https://fadeit.dk/blog/2015/04/30/python3-flask-pil-in-memory-image/
+https://github.com/rduplain/flask-svg-example/blob/master/app.py
+https://stackoverflow.com/questions/11017466/flask-return-image-created-from-database
+https://www.amazon.co.uk/RaphaelJS-Graphics-Visualization-Chris-Wilson/dp/1449365361
+http://dmitrybaranovskiy.github.io/raphael/reference.html#Paper.path
+http://flowchart.js.org/
+https://gist.github.com/sherdim/f0293bc7b022b852185b
+http://interactive.blockdiag.com/?compression=deflate&src=eJx9kEELgjAYhu_9io_dg5Q8hUEU3aLw0CU6TPehw-ls0yKi_54rE1ur8_s8257FQiY54zSF2wiARJRrhAhPDeqawKFsihgVsjAojjMDLKpKyfNfZKsYKthv9HCcZq9x19pcc1nagN8BK6yEvEJ7j-AJrVvSRS0zWqYIa67wQoX4OMnrGKtlPHe9XtAYBYRAfEZ-FBpx2NQrwVsZrAa2G78FizCSq9ulujjjO36kl73J074_AKHomss
+
+http://tutorials.jenkov.com/html5-canvas/shadows.html
+
+https://www.lean-agile-procurement.com/about/
