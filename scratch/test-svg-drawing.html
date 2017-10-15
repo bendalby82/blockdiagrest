@@ -1,15 +1,25 @@
 <html>
 <head><title>Test Drawing</title>
 <script>
-function drawStuff(){
-	var b_canvas = document.getElementById("a");
-	var context = b_canvas.getContext("2d");
-	var textStyleStageName = 'bold 14px arial';
+/*
+TODO: Make box width dynamic based on length of text
+TODO: Make arrow width dynamic based on length of text
 
-	var vspBoxWidth = 140;
-	var vspBoxHeight = 100;
-	var vspBoxPosX = 20;
-	var vspBoxPosY = 70;
+
+*/
+function textCentredXCoordinate(context, containerX, containerWidth, txtLine){
+	//Given an arbitrary container, what X coordinate should we start a line
+	//of text at so that it appears centred?
+	var txtLineWidth = context.measureText(txtLine).width;
+	return (containerX + parseInt((containerWidth - txtLineWidth) / 2));
+}
+
+
+function drawVSPBox(context, vspBoxPosX, vspBoxPosY, txtStepName, txtStepWorkTime, txtStepElapsedTime, txtStepWaitTime){
+
+	var textStyleStageName = 'bold 14px arial';
+	var vspBoxWidth = 120;
+	var vspBoxHeight = 70;
 	var txtLine = '';
 	var txtLineWidth = 0;
 	var txtLineHeight = 0;
@@ -21,35 +31,6 @@ function drawStuff(){
 	var vspSpaceBetweenTextLines = 6;
 	var elapsedTimeBoxWidth = 0;
 	var elapsedTimeBoxHeight = 20;
-
-
-	//b_context.fillRect(50, 25, 150, 100);
-
-	for (var x = 0.5; x < 500; x += 10){
-		context.moveTo(x, 0);
-		context.lineTo(x, 375);
-	}
-
-	for (var y = 0.5; y < 375; y += 10){
-		context.moveTo(0, y);
-		context.lineTo(500, y);
-	}
-
-	context.strokeStyle = "#eee";
-	context.stroke();
-
-	context.beginPath();
-	context.moveTo(0, 40);
-	context.lineTo(240, 40);
-	context.moveTo(260, 40);
-	context.lineTo(500, 40);
-	context.moveTo(495, 35);
-	context.lineTo(500, 40);
-	context.lineTo(495, 45);
-
-	context.strokeStyle = "#000";
-	context.stroke();
-	context.closePath();
 
 	//Draw a Value Stream Box
 	context.rect(vspBoxPosX,vspBoxPosY,vspBoxWidth,vspBoxHeight);
@@ -66,18 +47,18 @@ function drawStuff(){
 	context.shadowColor = 'transparent';
 	context.font = textStyleStageName;
 	context.fillStyle = 'black';
-	txtLine = 'Planning'
+	txtLine = txtStepName;
 	vspLinePosY = vspBoxPosY + 30;
 	context.fillText(txtLine,parseInt((vspBoxWidth - context.measureText(txtLine).width)/2) + vspBoxPosX, vspLinePosY);
 	context.font = '14px arial';
 	txtLineHeight = context.measureText('M').width;
 
-	txtLine = '60 hrs avg'
+	txtLine = txtStepWorkTime;
 	vspLinePosY = vspLinePosY + txtLineHeight + vspSpaceBetweenTextLines;
 	context.fillText(txtLine, parseInt((vspBoxWidth - context.measureText(txtLine).width)/2) + vspBoxPosX, vspLinePosY);
 
 	context.beginPath();
-	txtLine = '120 hrs';
+	txtLine = txtStepElapsedTime;
 	txtLineWidth = context.measureText(txtLine).width;
 	//See https://stackoverflow.com/questions/1134586/how-can-you-find-the-height-of-text-on-an-html-canvas
 	txtLineHeight = context.measureText('M').width;
@@ -93,7 +74,33 @@ function drawStuff(){
 		vspBoxPosY + vspBoxHeight + 10 + 
 		elapsedTimeBoxHeight - parseInt((elapsedTimeBoxHeight - txtLineHeight)/2));
 	//context.closePath();
-	
+
+	if (txtStepWaitTime) {
+		//Draw an arrow
+		context.beginPath();
+		var arrowLength = 60
+		var arrowX = vspBoxPosX - arrowLength;
+		var arrowY = vspBoxPosY + parseInt(vspBoxHeight / 2);
+		context.moveTo(arrowX, arrowY);
+		context.lineTo(arrowX + arrowLength, arrowY);
+		context.moveTo(arrowX + arrowLength - 5, arrowY - 5);
+		context.lineTo(arrowX + arrowLength, arrowY);
+		context.lineTo(arrowX + arrowLength - 5, arrowY + 5);
+		context.strokeStyle = "black";
+		context.stroke();
+
+		context.fillText(txtStepWaitTime, textCentredXCoordinate(context, arrowX, arrowLength, txtStepWaitTime), arrowY - 10);
+
+
+	}
+
+}
+
+function drawStuff(){
+	var b_canvas = document.getElementById("a");
+	var context = b_canvas.getContext("2d");
+	drawVSPBox(context, 20, 20, "Planning", "60 hr avg", "120 hrs", "");
+	drawVSPBox(context, 200,20, "Design", "10 hrs", "24hrs", "10 hrs");
 
 
 }
@@ -102,7 +109,7 @@ function drawStuff(){
 </head>
 <body onload="drawStuff()">
 <!--http://diveintohtml5.info/canvas.html-->
-<canvas id="a" width="500" height="375" class="clear" style="border:1px dotted;float:left"></canvas>
+<canvas id="a" width="800" height="375" class="clear" style="border:1px dotted;float:left"></canvas>
 
 </body>
 </html>
