@@ -14,12 +14,29 @@ function textCentredXCoordinate(context, containerX, containerWidth, txtLine){
 	return (containerX + parseInt((containerWidth - txtLineWidth) / 2));
 }
 
+function calculateArrowLength(context, txtStepWaitTime){
+	return context.measureText(txtStepWaitTime).width + 20;
+}
 
-function drawVSPBox(context, vspBoxPosX, vspBoxPosY, txtStepName, txtStepWorkTime, txtStepElapsedTime, txtStepWaitTime){
+function drawVSPArrow(context, arrowFinishX, arrowFinishY, arrowLength, txtStepWaitTime){
+	//Draw an arrow
+	context.beginPath();
+	var arrowX = arrowFinishX - arrowLength;
+	//var arrowY = arrowFinishY + parseInt(vspBoxHeight / 2);
+	var arrowY = arrowFinishY;
+	context.moveTo(arrowX, arrowY);
+	context.lineTo(arrowX + arrowLength, arrowY);
+	context.moveTo(arrowX + arrowLength - 5, arrowY - 5);
+	context.lineTo(arrowX + arrowLength, arrowY);
+	context.lineTo(arrowX + arrowLength - 5, arrowY + 5);
+	context.strokeStyle = "black";
+	context.stroke();
+	context.fillText(txtStepWaitTime, textCentredXCoordinate(context, arrowX, arrowLength, txtStepWaitTime), arrowY - 10);
+	}
+
+function drawVSPBox(context, vspBoxPosX, vspBoxPosY, vspBoxWidth, vspBoxHeight, txtStepName, txtStepWorkTime, txtStepElapsedTime, txtStepWaitTime){
 
 	var textStyleStageName = 'bold 14px arial';
-	var vspBoxWidth = 120;
-	var vspBoxHeight = 70;
 	var txtLine = '';
 	var txtLineWidth = 0;
 	var txtLineHeight = 0;
@@ -73,35 +90,40 @@ function drawVSPBox(context, vspBoxPosX, vspBoxPosY, txtStepName, txtStepWorkTim
 	context.fillText(txtLine, parseInt((vspBoxWidth - txtLineWidth)/2) + vspBoxPosX,
 		vspBoxPosY + vspBoxHeight + 10 + 
 		elapsedTimeBoxHeight - parseInt((elapsedTimeBoxHeight - txtLineHeight)/2));
-	//context.closePath();
-
-	if (txtStepWaitTime) {
-		//Draw an arrow
-		context.beginPath();
-		var arrowLength = 60
-		var arrowX = vspBoxPosX - arrowLength;
-		var arrowY = vspBoxPosY + parseInt(vspBoxHeight / 2);
-		context.moveTo(arrowX, arrowY);
-		context.lineTo(arrowX + arrowLength, arrowY);
-		context.moveTo(arrowX + arrowLength - 5, arrowY - 5);
-		context.lineTo(arrowX + arrowLength, arrowY);
-		context.lineTo(arrowX + arrowLength - 5, arrowY + 5);
-		context.strokeStyle = "black";
-		context.stroke();
-
-		context.fillText(txtStepWaitTime, textCentredXCoordinate(context, arrowX, arrowLength, txtStepWaitTime), arrowY - 10);
-
-
-	}
 
 }
 
+function drawVSPBoxAndArrow(context, vspBoxPosX, vspBoxPosY, vspBoxWidth, vspBoxHeight, arrowLength, 
+		txtStepName, txtStepWorkTime, txtStepElapsedTime, txtStepWaitTime){
+	drawVSPBox(context, vspBoxPosX, vspBoxPosY, vspBoxWidth, vspBoxHeight, 
+		txtStepName, txtStepWorkTime, txtStepElapsedTime);
+	if (txtStepWaitTime){
+		drawVSPArrow(context, vspBoxPosX, vspBoxPosY + parseInt(vspBoxHeight / 2), arrowLength, txtStepWaitTime);
+	}
+}
+
 function drawStuff(){
+	var vspBoxWidth = 120;
+	var vspBoxHeight = 70;
+	var lastBoxX = 20;
+	var lastBoxY = 20;
+	var txtStepWaitTime = "";
 	var b_canvas = document.getElementById("a");
 	var context = b_canvas.getContext("2d");
-	drawVSPBox(context, 20, 20, "Planning", "60 hr avg", "120 hrs", "");
-	drawVSPBox(context, 200,20, "Design", "10 hrs", "24hrs", "10 hrs");
 
+	drawVSPBoxAndArrow(context, lastBoxX, lastBoxY, vspBoxWidth, vspBoxHeight, 0,
+		"Planning", "60 hr avg", "120 hrs", txtStepWaitTime);
+	
+	//Next box
+
+	txtStepWaitTime = "10 months";
+	lastBoxX = lastBoxX + calculateArrowLength(context, txtStepWaitTime) + vspBoxWidth;
+
+	if (txtStepWaitTime){
+		drawVSPBoxAndArrow(context, lastBoxX, lastBoxY, vspBoxWidth, vspBoxHeight, 
+			calculateArrowLength(context, txtStepWaitTime), 
+			"Design", "10 hrs", "24hrs", txtStepWaitTime);
+	}
 
 }
 
