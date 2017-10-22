@@ -127,11 +127,43 @@ function drawStuff(){
 
 }
 
+function getTestData(){
+	/*
+{
+  "0": {
+    "StepName": "Planning",
+    "StepWork": "60 hr avg",
+    "StepElapsed": "120 hrs",
+    "StepWait": ""
+  },
+  "1": {
+    "StepName": "Design",
+    "StepWork": "10 hrs",
+    "StepElapsed": "24 hrs",
+    "StepWait": "10 months"
+  },
+  "2": {
+    "StepName": "Development",
+    "StepWork": "100 hrs",
+    "StepElapsed": "360 hrs",
+    "StepWait": "10 days"
+  }
+}
+	*/
+	var data = new Object();
+	data[0] = {StepName:"Planning", StepWork:"60 hr avg", StepElapsed:"120 hrs", StepWait:""};
+	data[1] = {StepName:"Design", StepWork:"10 hrs", StepElapsed:"24 hrs", StepWait:"10 months"};
+	data[2] = {StepName:"Development", StepWork:"100 hrs", StepElapsed:"360 hrs", StepWait:"10 days"};
+	var results = JSON.stringify(data);
+	document.getElementById("jsondata").value=results;
+	return JSON.stringify(data);
+}
+
 </script>
 </head>
-<body onload="drawStuff()">
+<body onload="getTestData()">
 <!--http://diveintohtml5.info/canvas.html-->
 <canvas id="a" width="800" height="375" class="clear" style="border:1px dotted;float:left"></canvas>
-
+<textarea rows="10" cols="50" id="jsondata"> </textarea>
 </body>
 </html>
