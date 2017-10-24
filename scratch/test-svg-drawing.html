@@ -102,7 +102,7 @@ function drawVSPBoxAndArrow(context, vspBoxPosX, vspBoxPosY, vspBoxWidth, vspBox
 	}
 }
 
-function drawStuff(){
+function drawStuff(jsondata){
 	var vspBoxWidth = 120;
 	var vspBoxHeight = 70;
 	var lastBoxX = 20;
@@ -111,18 +111,27 @@ function drawStuff(){
 	var b_canvas = document.getElementById("a");
 	var context = b_canvas.getContext("2d");
 
-	drawVSPBoxAndArrow(context, lastBoxX, lastBoxY, vspBoxWidth, vspBoxHeight, 0,
-		"Planning", "60 hr avg", "120 hrs", txtStepWaitTime);
+	var measuredata = JSON.parse(jsondata);
 
-	txtStepWaitTime = "10 months";
-	lastBoxX = lastBoxX + calculateArrowLength(context, txtStepWaitTime) + vspBoxWidth;
+	var boxCount = measuredata.measurements.length;
 
-	if (txtStepWaitTime){
-		drawVSPBoxAndArrow(context, lastBoxX, lastBoxY, vspBoxWidth, vspBoxHeight, 
-			calculateArrowLength(context, txtStepWaitTime), 
-			"Design", "10 hrs", "24hrs", txtStepWaitTime);
+	for (var i = 0; i < boxCount; i++){
+		var boxData = measuredata.measurements[i];
+		var arrowLength = 0;
+		if (i > 0){
+			txtStepWaitTime = boxData.StepWait;
+			arrowLength = calculateArrowLength(context, txtStepWaitTime);
+			lastBoxX = lastBoxX + arrowLength + vspBoxWidth;
+		}
+		drawVSPBoxAndArrow(context, lastBoxX, lastBoxY, vspBoxWidth, vspBoxHeight, arrowLength,
+			boxData.StepName, boxData.StepWork, boxData.StepElapsed, txtStepWaitTime);
 	}
 
+}
+
+function testCall(){
+	var testdata = getTestData();
+	drawStuff(testdata);
 }
 
 function getTestData(){
@@ -171,7 +180,7 @@ function getTestData(){
 
 </script>
 </head>
-<body onload="getTestData()">
+<body onload="testCall()">
 <!--http://diveintohtml5.info/canvas.html-->
 <canvas id="a" width="800" height="375" class="clear" style="border:1px dotted;float:left"></canvas>
 <textarea rows="10" cols="50" id="jsondata"> </textarea>
