@@ -2,8 +2,10 @@
 <head><title>Test Drawing</title>
 <script>
 /*
-TODO: Make box width dynamic based on length of text
-TODO: Make arrow width dynamic based on length of text
+TODO: Make box width dynamic based on length of text: PARKED
+TODO: Make arrow width dynamic based on length of text: DONE
+TODO: Adjust canvas size to width of drawing. See https://www.w3schools.com/tags/canvas_getimagedata.asp
+TODO: Add table to create boxes with GUI controls
 
 
 */
@@ -106,14 +108,18 @@ function drawStuff(jsondata){
 	var vspBoxWidth = 120;
 	var vspBoxHeight = 70;
 	var lastBoxX = 20;
-	var lastBoxY = 20;
+	var lastBoxY = 70;
 	var txtStepWaitTime = "";
 	var b_canvas = document.getElementById("a");
 	var context = b_canvas.getContext("2d");
 
-	var measuredata = JSON.parse(jsondata);
 
+	var measuredata = JSON.parse(jsondata);
 	var boxCount = measuredata.measurements.length;
+
+	//This is a little tricky. Need to draw the box to know how wide the canvas is.
+	//TODO: Maybe precalculate?
+	b_canvas.width = lastBoxX + (boxCount * vspBoxWidth) + ((boxCount - 1) * 100) + 20;
 
 	for (var i = 0; i < boxCount; i++){
 		var boxData = measuredata.measurements[i];
@@ -131,6 +137,12 @@ function drawStuff(jsondata){
 
 function testCall(){
 	var testdata = getTestData();
+	drawStuff(testdata);
+}
+
+//When the testbox loses focus
+function refreshDrawing(){
+	var testdata = document.getElementById("jsondata").value;
 	drawStuff(testdata);
 }
 
@@ -182,7 +194,8 @@ function getTestData(){
 </head>
 <body onload="testCall()">
 <!--http://diveintohtml5.info/canvas.html-->
-<canvas id="a" width="800" height="375" class="clear" style="border:1px dotted;float:left"></canvas>
-<textarea rows="10" cols="50" id="jsondata"> </textarea>
+<canvas id="a" width="800" height="230" class="clear" style="border:1px dotted;float:none;"></canvas>
+<h2 style="font-family: helvetica;">Value Stream as Code</h2>
+<textarea onfocusout="refreshDrawing()" rows="10" cols="80" id="jsondata" style="font-family: courier;"> </textarea>
 </body>
 </html>
