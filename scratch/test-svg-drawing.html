@@ -223,13 +223,39 @@ function addRow()
     x.appendChild( new_row );
 }
 
+function parseTable(){
+	var table=document.getElementById('tableValueStream');
+	var data = {
+		summary : {Title:"Development Workflow", TotalWork:"100 hrs", TotalElapsed:"200 hrs", TotalWait:"500 hrs"},
+		measurements : []
+	};
+
+	for (var i = 1, row; row = table.rows[i]; i++) {
+		if (i==1){
+			data.measurements.push({StepName:row.cells[1].firstChild.value, StepWork:row.cells[2].firstChild.value, StepElapsed:row.cells[3].firstChild.value, StepWait:""});
+
+		} else {
+			data.measurements.push({StepName:row.cells[1].firstChild.value, StepWork:row.cells[2].firstChild.value, StepElapsed:row.cells[3].firstChild.value, StepWait:row.cells[4].firstChild.value});
+		}
+   		//iterate through rows
+   		//rows would be accessed using the "row" variable assigned in the for loop
+   		//for (var j = 1, col; col = row.cells[j]; j++) {}
+     		//iterate through columns
+     		//columns would be accessed using the "col" variable assigned in the for loop
+   	}
+	var results = JSON.stringify(data);
+	document.getElementById("jsondata").value=results;
+   	refreshDrawing();
+
+}
+
 </script>
 </head>
 <body onload="testCall()">
 <!--http://diveintohtml5.info/canvas.html-->
 <canvas id="a" width="800" height="230" class="clear" style="border:1px dotted;float:none;"></canvas>
 <h2 style="font-family: helvetica;">Value Stream as Code</h2>
-<textarea onfocusout="refreshDrawing()" rows="10" cols="80" id="jsondata" style="font-family: courier;"> </textarea>
+<textarea onfocusout="refreshDrawing()" rows="10" cols="80" readonly id="jsondata" style="font-family: courier;"> </textarea>
 <h2 style="font-family: helvetica;">Value Stream Editor</h2>
 <table id="tableValueStream" border="1">
     <tr>
@@ -250,5 +276,6 @@ function addRow()
     </tr>
 </table>
 <input type="button" id="addValueStreamRow" value="Add Row" onclick="addRow()" /><br/>
+<input type="button" id="btnRefreshValueStream" value="Update Diagram" onclick="parseTable()" /><br/>
 </body>
 </html>
