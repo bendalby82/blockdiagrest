@@ -4,8 +4,12 @@
 /*
 TODO: Make box width dynamic based on length of text: PARKED
 TODO: Make arrow width dynamic based on length of text: DONE
-TODO: Adjust canvas size to width of drawing. See https://www.w3schools.com/tags/canvas_getimagedata.asp
-TODO: Add table to create boxes with GUI controls - http://jsfiddle.net/7AeDQ/
+TODO: Adjust canvas size to width of drawing. See https://www.w3schools.com/tags/canvas_getimagedata.asp DONE
+TODO: Add table to create boxes with GUI controls - http://jsfiddle.net/7AeDQ/ DONE
+TODO: Add summary fields for input, and style/font choice
+TODO: Add same summary fields to image!
+TODO: Style the table more nicely, including fonts
+TODO: Add row ID to the data
 
 
 */
@@ -108,7 +112,7 @@ function drawStuff(jsondata){
 	var vspBoxWidth = 120;
 	var vspBoxHeight = 70;
 	var lastBoxX = 20;
-	var lastBoxY = 70;
+	var lastBoxY = 20;
 	var txtStepWaitTime = "";
 	var b_canvas = document.getElementById("a");
 	var context = b_canvas.getContext("2d");
@@ -218,9 +222,8 @@ function addRow()
     var inp4 = new_row.cells[4].getElementsByTagName('input')[0];
     inp4.id += len;
     inp4.value = '';
-
-
     x.appendChild( new_row );
+    document.getElementById(inp1.id).focus();
 }
 
 function parseTable(){
@@ -249,13 +252,23 @@ function parseTable(){
 
 }
 
+//https://stackoverflow.com/questions/30694433/how-to-give-browser-save-image-as-option-to-button
+function saveImage() {
+	var canvas = document.getElementById("a");
+    window.open(canvas.toDataURL('image/png'));
+    var gh = canvas.toDataURL('png');
+
+    var a  = document.createElement('a');
+    a.href = gh;
+    a.download = 'value-stream-map.png';
+
+    a.click();
+}
+
 </script>
 </head>
 <body onload="testCall()">
 <!--http://diveintohtml5.info/canvas.html-->
-<canvas id="a" width="800" height="230" class="clear" style="border:1px dotted;float:none;"></canvas>
-<h2 style="font-family: helvetica;">Value Stream as Code</h2>
-<textarea onfocusout="refreshDrawing()" rows="10" cols="80" readonly id="jsondata" style="font-family: courier;"> </textarea>
 <h2 style="font-family: helvetica;">Value Stream Editor</h2>
 <table id="tableValueStream" border="1">
     <tr>
@@ -268,14 +281,22 @@ function parseTable(){
     </tr>
     <tr>
         <td>1</td>
-        <td><input size=25 type="text" id="boxStepName"/></td>
-        <td><input size=10 type="text" id="boxStepWorkTime"/></td>
-        <td><input size=10 type="text" id="boxStepElapsedTime"/></td>
-        <td><input size=10 type="text" id="boxStepWaitTime"/></td>
+        <td><input size=25 type="text" id="boxStepName" onfocusout="parseTable()"/></td>
+        <td><input size=10 type="text" id="boxStepWorkTime" onfocusout="parseTable()"/></td>
+        <td><input size=10 type="text" id="boxStepElapsedTime" onfocusout="parseTable()"/></td>
+        <td><input size=10 type="text" id="boxStepWaitTime" onfocusout="parseTable();addRow();"/></td>
         <td><input type="button" id="delValueStreamRow" value="Delete" onclick="deleteRow(this)"/></td>
     </tr>
 </table>
-<input type="button" id="addValueStreamRow" value="Add Row" onclick="addRow()" /><br/>
-<input type="button" id="btnRefreshValueStream" value="Update Diagram" onclick="parseTable()" /><br/>
+<!--<input type="button" id="addValueStreamRow" value="Add Row" onclick="addRow()" /><br/>-->
+<h2 style="font-family: helvetica;">Value Stream Map</h2>
+<canvas id="a" width="800" height="140" class="clear" style="border:1px dotted;float:none;"></canvas>
+<p />
+<input type="button" id="btnSaveAs" value="Save as PNG" onclick="saveImage();" /><br/>
+
+<h2 style="font-family: helvetica;">Value Stream as Code</h2>
+<textarea onfocusout="refreshDrawing()" rows="10" cols="80" id="jsondata" style="font-family: courier;"> </textarea>
+<p><em>Check me into source code control</em></p>
+
 </body>
 </html>
